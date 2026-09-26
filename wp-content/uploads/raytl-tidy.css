@@ -1,0 +1,202 @@
+/* RK IT Services — static-site overrides (post-WordPress migration).
+   Linked on every page. Page-specific rules are scoped by Elementor element
+   ID, so they only take effect on the page where those elements exist. */
+
+/* ============================ GLOBAL (all pages) ============================ */
+
+/* Remove the header search icon + its modal. Site search has no backend on a
+   static host, so the magnifying glass is hidden everywhere. */
+.elementor-element-bd211cb {
+  display: none !important;
+}
+
+/* Footer logo: transparent directly on the coral background, matching Ray Technologies */
+.elementor-183 .elementor-element.elementor-element-1fb69c5a a {
+  display: inline-block;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin-bottom: 8px;
+}
+.elementor-183 .elementor-element.elementor-element-1fb69c5a img {
+  display: block;
+  width: 100% !important;
+  max-width: 200px !important;
+  height: auto !important;
+}
+
+/* ============================ CONTACT PAGE ============================ */
+
+/* GAP FIX: hide empty leftover sections that left a big blank space under the
+   contact box —
+   - 2cfb91cb: placeholder offices (Jakarta/Bandung/Surabaya), hidden on all devices
+   - 243e02e2: Google Map widget whose iframe had no source (rendered empty) */
+.elementor-element-2cfb91cb,
+.elementor-element-243e02e2 {
+  display: none !important;
+}
+
+/* BALANCE FIX: keep the full-width coral panel, hold the contact details to the
+   left, and inset the office-location map on the right. */
+.elementor-element-23423f > .elementor-element-populated {
+  position: relative !important;
+  padding-right: 40% !important;
+}
+.raytl-map {
+  position: absolute;
+  top: 40px;
+  right: 44px;
+  bottom: 40px;
+  width: 33%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+.raytl-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+@media (max-width: 1024px) {
+  .elementor-element-23423f > .elementor-element-populated {
+    padding-right: 7% !important;
+  }
+  .raytl-map {
+    position: static;
+    width: 100%;
+    height: 260px;
+    margin: 20px 0 4px;
+  }
+  .raytl-map iframe { height: 260px; }
+}
+
+/* ============================ PRIVACY PAGE ============================ */
+
+/* The "how and why we use your data" table (section 7). The theme provides no
+   default styling for tables in the privacy notice, so give it readable
+   borders/padding and a branded header row (site secondary navy #000B41). */
+.raytl-privacy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 10px;
+  font-size: 0.95em;
+}
+.raytl-privacy-table th,
+.raytl-privacy-table td {
+  border: 1px solid #d7dae6;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.raytl-privacy-table thead th {
+  background: #000B41;
+  color: #fff;
+  font-weight: 700;
+}
+.raytl-privacy-table tbody tr:nth-child(even) td {
+  background: #f6f7fb;
+}
+
+/* Stack the table into cards on narrow screens; show the column name from the
+   td's data-label so each value keeps its context. */
+@media (max-width: 600px) {
+  .raytl-privacy-table thead { display: none; }
+  .raytl-privacy-table,
+  .raytl-privacy-table tbody,
+  .raytl-privacy-table tr,
+  .raytl-privacy-table td { display: block; width: 100%; }
+  .raytl-privacy-table tr {
+    border: 1px solid #d7dae6;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .raytl-privacy-table td { border: 0; border-bottom: 1px solid #e9ebf3; }
+  .raytl-privacy-table tr td:last-child { border-bottom: 0; }
+  .raytl-privacy-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 700;
+    color: #000B41;
+    margin-bottom: 4px;
+  }
+}
+
+/* Page header: give the Privacy page a full-width hero banner so it matches the
+   Elementor pages (About us, Careers, Our Partners…) — generic office photo +
+   dark navy overlay + centered white title. The default page template renders a
+   plain heading on the mint body; this turns it into a proper hero. Scoped to
+   the Privacy page (page-id-1113). */
+body.page-id-1113 .entry-header,
+body.page-id-1113 .entry-header.alignwide {
+  position: relative;
+  max-width: none;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  margin-bottom: 64px;
+  border-bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 11, 65, 0.55), rgba(0, 11, 65, 0.55)),
+    url("2021/08/software-developer-working-with-computer-in-the-modern-startup-office-.jpg");
+  background-size: cover;
+  background-position: center;
+}
+body.page-id-1113 .entry-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 70px);
+  line-height: 1.1;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+@media (max-width: 768px) {
+  body.page-id-1113 .entry-header,
+  body.page-id-1113 .entry-header.alignwide {
+    min-height: 300px;
+    margin-bottom: 40px;
+  }
+}
+
+/* ============================ COOKIE CONSENT (CookieYes) ============================ */
+
+/* The consent banner shipped with no corner-position class, so its fixed 440px
+   box anchored top-left and (with a huge description) stretched down the whole
+   left edge of the page. Pin it to the bottom-right as a compact card and cap
+   its height so any overflow scrolls inside the card instead of taking over. */
+.cky-consent-container {
+  top: auto !important;
+  left: auto !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  width: 400px !important;
+  max-width: calc(100vw - 32px) !important;
+}
+.cky-consent-bar {
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+/* Revisit ("Cookie Settings") icon: tuck it in the bottom-left so it never
+   overlaps the consent card or page content. */
+.cky-btn-revisit-wrapper {
+  top: auto !important;
+  right: auto !important;
+  left: 16px !important;
+  bottom: 16px !important;
+}
+@media (max-width: 480px) {
+  .cky-consent-container {
+    right: 12px !important;
+    left: 12px !important;
+    bottom: 12px !important;
+    width: auto !important;
+  }
+}
